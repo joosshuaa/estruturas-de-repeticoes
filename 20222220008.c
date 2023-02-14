@@ -1,45 +1,61 @@
 #include <stdio.h>
+#define NUM_ALUNOS 10
+#define NUM_EXERCICIOS 3
 /*O programa deve receber como entrada três notas de cada aluno em uma linha;
 Deve perguntar ao usuário se deseja inserir as notas de outro aluno, e:
 Caso a resposta seja “sim” deve solicitar os dados do próximo aluno.
 Caso a resposta seja “não” deve mostrar a maior e a menor nota do primeiro
 , do segundo, e do terceiro exercício e a maior e a menor média..*/
-int main(){
-    float nota1;
-    float nota2;
-    float nota3;
-    float media;
-    float maior;
-    float menor;
-    printf("Digite a nota 1: ");
-    scanf("%f", &nota1);
-    printf("Digite a nota 2: ");
-    scanf("%f", &nota2);
-    printf("Digite a nota 3: ");
-    scanf("%f", &nota3);
 
-    if((nota1>=maior)&&(nota1>=menor)){
-        maior=nota1;
-        if ((nota1>=maior)&&(nota1>=menor)){
-            menor=nota1;
-        }       
-    }else if ((nota2>=maior)&&(nota2>=menor)){
-        maior=nota2;
-        if((nota2>=maior)&&(nota2>=menor)){
-            menor=nota2;
+int main() {
+    float notas[NUM_ALUNOS][NUM_EXERCICIOS];
+    int alunoAtual = 0;
+    char continuar;
+
+    do {
+        printf("Digite as notas do aluno %d (separadas por espaço): ", alunoAtual + 1);
+        scanf("%f %f %f", &notas[alunoAtual][0], &notas[alunoAtual][1], &notas[alunoAtual][2]);
+        alunoAtual++;
+
+        printf("Deseja inserir as notas de outro aluno? (s/n) ");
+        scanf(" %c", &continuar);
+    } while (continuar == 's' && alunoAtual < NUM_ALUNOS);
+
+    float maiorNota[NUM_EXERCICIOS] = {0};
+    float menorNota[NUM_EXERCICIOS] = {999};
+    float maiorMedia = 0;
+    float menorMedia = 999;
+
+    for (int i = 0; i < alunoAtual; i++) {
+        float media = (notas[i][0] + notas[i][1] + notas[i][2]) / NUM_EXERCICIOS;
+
+        for (int j = 0; j < NUM_EXERCICIOS; j++) {
+            if (notas[i][j] > maiorNota[j]) {
+                maiorNota[j] = notas[i][j];
+            }
+            if (notas[i][j] < menorNota[j]) {
+                menorNota[j] = notas[i][j];
+            }
         }
-    }else if ((nota3>=maior)&&(nota3>=menor)){
-        maior=nota3;
-        if((nota3>=maior)&&(nota3>=menor)){
-            menor=nota3;
-        }       
+
+        if (media > maiorMedia) {
+            maiorMedia = media;
+        }
+        if (media < menorMedia) {
+            menorMedia = media;
+        }
     }
-    media = (nota1 + nota2 + nota3)/3;
-    printf("\n----------------------------------------------------\n");
-    printf("| Exercicio 1 | Exercicio 2| Exercicio 3 | Media     |\n");
-    printf("| maior|menor |maior|menor |maior|menor  |maior|menor| \n");
-    printf("| %1.2f |%1.2f  |%1.2f |%1.2f  |%1.2f |%1.2f   |%1.2f |%1.2f |\n",nota1, nota2, nota3, maior, menor, media );
-    printf("----------------------------------------------------\n");
+
+    printf("\n");
+    printf("Maior nota do primeiro exercicio: %.2f\n", maiorNota[0]);
+    printf("Menor nota do primeiro exercicio: %.2f\n", menorNota[0]);
+    printf("Maior nota do segundo exercicio: %.2f\n", maiorNota[1]);
+    printf("Menor nota do segundo exercicio: %.2f\n", menorNota[1]);
+    printf("Maior nota do terceiro exercicio: %.2f\n", maiorNota[2]);
+    printf("Menor nota do terceiro exercicio: %.2f\n", menorNota[2]);
+    printf("\n");
+    printf("Maior media: %.2f\n", maiorMedia);
+    printf("Menor media: %.2f\n", menorMedia);
 
     return 0;
 }
